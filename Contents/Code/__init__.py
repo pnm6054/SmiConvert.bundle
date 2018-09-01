@@ -11,7 +11,8 @@ from smi2srt import convertSMI
 def Start():
   pass
 
-def convertSubtitles(part, SaveSRT):
+#def convertSubtitles(part, SaveSRT):
+def convertSubtitles(part):
   Log(part.file)
   basePath = os.path.splitext(part.file)[0]
   smiPath = basePath+'.smi'
@@ -22,33 +23,35 @@ def convertSubtitles(part, SaveSRT):
 
   # (1) transcode to CP949
   subData = Core.storage.load(smiPath)
-  subEncoding = chdet(subData)
-  if subEncoding != 'Unknown':
-    Log('transcode to cp949')
-    subData = unicode(subData, subEncoding, 'ignore').encode('cp949')
+  #subEncoding = chdet(subData)
+  #if subEncoding != 'Unknown':
+    #Log('transcode to cp949')
+    #subData = unicode(subData, subEncoding, 'ignore').encode('cp949')
 
   # (2) split languages if needed
   result = demuxSMI(subData)
 
   # (3) convert SMI to SRT
-  if SaveSRT:
-    result2 = dict()
-    for lang, smiData in result.iteritems():
-      result2[lang] = convertSMI(smiData.decode('cp949','ignore').encode('utf-8'))
-      Log('convert(%s): %d -> %d' % (lang, len(smiData), len(result2[lang])))
-    result = result2
-    ext = '.srt'
+  #if SaveSRT:
+  result2 = dict()
+  for lang, smiData in result.iteritems():
+    #result2[lang] = convertSMI(smiData.decode('cp949','ignore').encode('utf-8'))
+    result2[lang] = convertSMI(smiData)
+    #Log('convert(%s): %d -> %d' % (lang, len(smiData), len(result2[lang])))
+    Log('convert')
+  result = result2
+  ext = '.srt'
 
   # (4) save
-  if not SaveSRT and subEncoding == 'Unknown':
-    return True	    # no need to save
-  if len(result) > 1:
-    for lang, subData in result.iteritems():
-      Core.storage.save(basePath+'.'+lang+ext, subData)
-  elif SaveSRT or subEncoding != 'Unknown':
-    Core.storage.save(basePath+'.ko'+ext, result['unknown'])
+  #if not SaveSRT and subEncoding == 'Unknown':
+  #  return True	    # no need to save
+  #if len(result) >= 1:
+  for lang, subData in result.iteritems():
+    Core.storage.save(basePath+'.ko'+ext, subData)
+  #elif SaveSRT or subEncoding != 'Unknown':
+  #  Core.storage.save(basePath+'.ko'+ext, result['unknown'])
   return True
-
+"""
 def chdet(aBuf):
     # If the data starts with BOM, we know it is UTF
   if aBuf[:3] == '\xEF\xBB\xBF':
@@ -75,7 +78,7 @@ def chdet(aBuf):
   else:
     result = "Unknown"
   return result
-
+"""
 # entry for Movie
 class SmiSubtitleAgentMovies(Agent.Movies):
   name = 'SMI Converter'
@@ -110,4 +113,5 @@ class SmiSubtitleAgentTV(Agent.TV_Shows):
         for e in media.seasons[s].episodes:
           for i in media.seasons[s].episodes[e].items:
             for part in i.parts:
-              convertSubtitles(part, SaveSRT)
+              convertSubtitles(part)
+              #convertSubtitles(part, SaveSRT)
