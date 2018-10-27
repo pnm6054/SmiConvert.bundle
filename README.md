@@ -12,6 +12,11 @@ TODO
 * Support saving in ASS format
 * Handling SMI file which has no language info header
 
+--------------
+Additional feature
++ (UCS-2 LE encoded)smi file convert
+- (EUC-KR)smi file convert
+
 Acknowledge
 -------------
 

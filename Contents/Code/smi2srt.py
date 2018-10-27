@@ -112,7 +112,7 @@ class smiItem(object):
 def convertSMI(smi_sgml):
 	# skip to first starting tag (skip first 0xff 0xfe ...)
 	try:
-		fndx = smi_sgml.find('<SYNC')
+		fndx = smi_sgml.upper().find('<SYNC') # add upper()
 	except Exception, e:
 		print chdt
 		raise e
