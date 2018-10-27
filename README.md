@@ -14,8 +14,7 @@ TODO
 
 --------------
 Additional feature
-+ (UCS-2 LE encoded)smi file convert
-- (EUC-KR)smi file convert
+* (Unicode with BOM, EUC-KR encoded)smi file convert to (utf-8 encoded)srt file
 
 Acknowledge
 -------------

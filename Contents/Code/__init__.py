@@ -19,14 +19,23 @@ def convertSubtitles(part, SaveSRT):
   
   # (2) convert SMI to SRT and save
   result = {'ko':''}
-  if SaveSRT and subEncoding != 'Unknown':
+  if SaveSRT and subEncoding != 'Unknown': # if Unicode with BOM
     result['ko'] = convertSMI(subData.decode(subEncoding, 'ignore').encode('utf-8'))
     Log('convert(%s)' % (smiPath))
     ext = '.srt'
     Core.storage.save(basePath+'.ko'+ext, result['ko'])
     return True
+  elif SaveSRT and subEncoding == 'Unknown': # if EUC-KR
+    subData = convertSMI(subData.decode('EUC-KR', 'ignore').encode('utf-8'))
+    Log('convert Unknown')
+    if subData!=False:
+      print('convert(%s)(EUC-KR)' % smiPath)
+      Core.storage.save(basePath+'.ko.srt',subData)
+      return True
+    else: # else
+      Log('Unknown Encoding')
   elif not SaveSRT:
-      Log('SaveSRT false')
+    Log('SaveSRT false')
 
 def chdet(aBuf):
     # If the data starts with BOM, we know it is UTF
