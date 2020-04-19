@@ -29,7 +29,7 @@ def convertSubtitles(part, SaveSRT):
     subData = convertSMI(subData.decode('EUC-KR', 'ignore').encode('utf-8'))
     Log('convert Unknown')
     if subData!=False:
-      print('convert(%s)(EUC-KR)' % smiPath)
+      # print('convert(%s)(EUC-KR)' % smiPath)
       Core.storage.save(basePath+'.ko.srt',subData)
       return True
     else: # else
