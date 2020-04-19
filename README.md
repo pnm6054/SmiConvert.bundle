@@ -20,4 +20,4 @@ Acknowledge
 -------------
 
 * [smi2srt](https://gist.github.com/suapapa/1532257)
-* [subassert]](https://github.com/thusoy/subassert)
+* [subassert](https://github.com/thusoy/subassert)
